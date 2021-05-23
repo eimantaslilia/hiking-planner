@@ -1,4 +1,4 @@
-package com.outdoors.hiking;
+package com.outdoors.hiking.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
