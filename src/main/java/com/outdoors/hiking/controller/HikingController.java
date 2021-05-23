@@ -5,10 +5,7 @@ import com.outdoors.hiking.dto.Recommendation;
 import com.outdoors.hiking.dto.weather.WeatherData;
 import com.outdoors.hiking.service.RecommendationsService;
 import com.outdoors.hiking.service.WeatherQueryService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @ResponseBody
 @RequestMapping("hiking-app")
@@ -23,7 +20,7 @@ public class HikingController {
         this.recommendationsService = recommendationsService;
     }
 
-    @PostMapping(value = "/recommendations", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/recommendations", consumes = "application/json", produces = "application/json")
     public Recommendation recommendations(@RequestBody Input input) {
         validateInput(input);
         WeatherData weatherData = weatherQueryService.retrieveWeatherData(input.getLocation());
