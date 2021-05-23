@@ -71,6 +71,7 @@ public class WeatherQueryService {
     private WeatherData emptyWeatherData () {
         WeatherData data = new WeatherData();
         data.setMessage("Could not retrieve weather information, please check parameters and try again.");
+        data.setPopulated(false);
         return data;
     }
 }

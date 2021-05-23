@@ -3,7 +3,6 @@ package com.outdoors.hiking.dto.weather;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -24,4 +23,5 @@ public class WeatherData {
     private String name;
     private String cod;
     private String message;
+    private boolean populated = true;
 }

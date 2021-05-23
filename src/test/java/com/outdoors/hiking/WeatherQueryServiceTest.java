@@ -8,7 +8,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,9 +65,9 @@ public class WeatherQueryServiceTest {
         WeatherData actual = weatherQueryService.retrieveWeatherData(TEST_LOCATION);
 
         //then
-        Assertions.assertNotNull(expected);
-        Assertions.assertEquals(expected.getBase(), actual.getBase());
-        Assertions.assertEquals(expected.getId(), actual.getId());
+        assertNotNull(expected);
+        assertEquals(expected.getBase(), actual.getBase());
+        assertEquals(expected.getId(), actual.getId());
 
         verify(httpClient).execute(any(HttpGet.class));
     }
@@ -81,8 +81,9 @@ public class WeatherQueryServiceTest {
         WeatherData actual = weatherQueryService.retrieveWeatherData(TEST_LOCATION);
 
         //then
-        Assertions.assertNotNull(actual);
-        Assertions.assertNotNull(actual.getMessage());
+        assertNotNull(actual);
+        assertNotNull(actual.getMessage());
+        assertFalse(actual.isPopulated());
     }
 
     @Test
@@ -98,8 +99,9 @@ public class WeatherQueryServiceTest {
         WeatherData actual = weatherQueryService.retrieveWeatherData(TEST_LOCATION);
 
         //then
-        Assertions.assertNotNull(actual);
-        Assertions.assertNotNull(actual.getMessage());
+        assertNotNull(actual);
+        assertNotNull(actual.getMessage());
+        assertFalse(actual.isPopulated());
 
         verify(httpClient).execute(any(HttpGet.class));
     }
