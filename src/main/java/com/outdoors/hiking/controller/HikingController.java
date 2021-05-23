@@ -5,25 +5,34 @@ import com.outdoors.hiking.dto.Recommendation;
 import com.outdoors.hiking.dto.weather.WeatherData;
 import com.outdoors.hiking.service.RecommendationsService;
 import com.outdoors.hiking.service.WeatherQueryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController()
+@ResponseBody
+@RequestMapping("hiking-app")
 public class HikingController {
 
-    @Autowired
-    private WeatherQueryService weatherQueryService;
+    private final WeatherQueryService weatherQueryService;
 
-    @Autowired
-    private RecommendationsService recommendationsService;
+    private final RecommendationsService recommendationsService;
+
+    public HikingController(WeatherQueryService weatherQueryService, RecommendationsService recommendationsService) {
+        this.weatherQueryService = weatherQueryService;
+        this.recommendationsService = recommendationsService;
+    }
 
     @PostMapping(value = "/recommendations", consumes = "application/json", produces = "application/json")
     public Recommendation recommendations(@RequestBody Input input) {
-
+        validateInput(input);
         WeatherData weatherData = weatherQueryService.retrieveWeatherData(input.getLocation());
-
         return recommendationsService.constructRecommendations(weatherData, input);
+    }
+
+    private void validateInput(Input input) {
+        if(input.getTripLength() <= 0 || input.getLocation() == null) {
+            throw new IllegalArgumentException("Please provide both: tripLength and location");
+        }
     }
 }

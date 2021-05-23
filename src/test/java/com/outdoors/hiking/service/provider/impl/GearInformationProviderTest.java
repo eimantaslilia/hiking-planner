@@ -7,7 +7,6 @@ import com.outdoors.hiking.dto.weather.MainInfo;
 import com.outdoors.hiking.dto.weather.Weather;
 import com.outdoors.hiking.dto.weather.WeatherData;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.*;
 import java.util.function.Function;
@@ -15,22 +14,12 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests covering {@link GearInformationProvider;}
+ */
 public class GearInformationProviderTest {
 
-    private static final String GEAR_MAP = "gearMap";
-
-    private final GearInformationProvider provider = new GearInformationProvider();
-
-    @Test
-    public void shouldSuccessfullyValidateKeys() {
-        //given
-        Map<String, List<String>> gearMap = mockGearMap();
-
-        ReflectionTestUtils.setField(provider, GEAR_MAP, gearMap);
-
-        //then
-        provider.validateKeys();
-    }
+    private GearInformationProvider provider = new GearInformationProvider(mockGearMap());
 
     @Test
     public void shouldThrowErrorEnumsAndKeysDoNotMatch() {
@@ -40,7 +29,7 @@ public class GearInformationProviderTest {
         gearMap.put("NIGHT", Collections.emptyList());
         gearMap.put("COLD", Collections.emptyList());
 
-        ReflectionTestUtils.setField(provider, GEAR_MAP, gearMap);
+        this.provider = new GearInformationProvider(gearMap);
 
         //then
         assertThrows(RuntimeException.class, provider::validateKeys);
@@ -55,7 +44,7 @@ public class GearInformationProviderTest {
             gearMap.remove(entry.get());
             gearMap.put(entry.get().toLowerCase(), new ArrayList<>());
 
-            ReflectionTestUtils.setField(provider, GEAR_MAP, gearMap);
+            this.provider = new GearInformationProvider(gearMap);
 
             //then
             assertThrows(RuntimeException.class, provider::validateKeys);
@@ -68,8 +57,6 @@ public class GearInformationProviderTest {
         WeatherData data = new WeatherData();
         data.setPopulated(false);
         Input input = new Input("vilnius", 15);
-
-        ReflectionTestUtils.setField(provider, GEAR_MAP, mockGearMap());
 
         //when
         Recommendation recommendation = provider.provide(new Recommendation(), data, input);
@@ -86,8 +73,6 @@ public class GearInformationProviderTest {
         //given
         WeatherData data = new WeatherData();
         data.setPopulated(false);
-
-        ReflectionTestUtils.setField(provider, GEAR_MAP, mockGearMap());
 
         //when
         Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("south dakota", 25));
@@ -110,8 +95,6 @@ public class GearInformationProviderTest {
         weather.setMain("Rain");
         data.setWeather(Collections.singletonList(weather));
 
-        ReflectionTestUtils.setField(provider, GEAR_MAP, mockGearMap());
-
         //when
         Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("mumbai", 15));
         Map<String, List<String>> gearInfo = recommendation.getGearInfo();
@@ -120,7 +103,7 @@ public class GearInformationProviderTest {
         assertEquals(3, gearInfo.keySet().size());
         assertTrue(gearInfo.containsKey(Gear.ESSENTIALS.name()));
         assertTrue(gearInfo.containsKey(Gear.OPTIONAL.name()));
-        assertTrue(gearInfo.containsKey(Gear.RAIN.name()));
+        assertTrue(gearInfo.containsKey(Gear.RAINY.name()));
     }
 
     @Test
@@ -131,8 +114,6 @@ public class GearInformationProviderTest {
         weather.setMain("Clear");
         data.setWeather(Collections.singletonList(weather));
 
-        ReflectionTestUtils.setField(provider, GEAR_MAP, mockGearMap());
-
         //when
         Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("vilnius", 15));
         Map<String, List<String>> gearInfo = recommendation.getGearInfo();
@@ -141,7 +122,7 @@ public class GearInformationProviderTest {
         assertEquals(3, gearInfo.keySet().size());
         assertTrue(gearInfo.containsKey(Gear.ESSENTIALS.name()));
         assertTrue(gearInfo.containsKey(Gear.OPTIONAL.name()));
-        assertTrue(gearInfo.containsKey(Gear.SUN.name()));
+        assertTrue(gearInfo.containsKey(Gear.SUNNY.name()));
     }
 
     @Test
@@ -151,8 +132,6 @@ public class GearInformationProviderTest {
         MainInfo mainInfo = new MainInfo();
         mainInfo.setTemp("5");
         data.setMain(mainInfo);
-
-        ReflectionTestUtils.setField(provider, GEAR_MAP, mockGearMap());
 
         //when
         Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("delhi", 10));

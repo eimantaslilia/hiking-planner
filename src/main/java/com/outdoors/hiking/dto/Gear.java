@@ -3,8 +3,8 @@ package com.outdoors.hiking.dto;
 public enum Gear {
 
     NIGHT,
-    SUN,
-    RAIN,
+    SUNNY,
+    RAINY,
     COLD,
     ESSENTIALS,
     NAVIGATION,

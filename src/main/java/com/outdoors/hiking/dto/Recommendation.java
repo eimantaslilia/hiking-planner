@@ -12,7 +12,7 @@ public class Recommendation {
 
     private Map<String, List<String>> gearInfo;
 
-    private Map<String, String> tripInfo;
-
     private Map<String, String> weatherInfo;
+
+    private Nutrition nutrition;
 }

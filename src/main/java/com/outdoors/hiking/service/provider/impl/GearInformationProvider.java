@@ -5,18 +5,19 @@ import com.outdoors.hiking.dto.Input;
 import com.outdoors.hiking.dto.Recommendation;
 import com.outdoors.hiking.dto.weather.WeatherData;
 import com.outdoors.hiking.service.provider.InformationProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
 public class GearInformationProvider implements InformationProvider {
 
-    @Value("#{${gear.map}}")
-    private HashMap<String, List<String>> gearMap;
+    private final Map<String, List<String>> gearMap;
+
+    public GearInformationProvider(Map<String, List<String>> gearMap) {
+        this.gearMap = gearMap;
+    }
 
     @PostConstruct
     public void validateKeys() {
@@ -51,9 +52,9 @@ public class GearInformationProvider implements InformationProvider {
     private HashMap<String, List<String>> recommendBasedOnWeatherConditions(WeatherData data, HashMap<String, List<String>> recommendedGear) {
         Optional.ofNullable(data.getWeather()).flatMap(w -> w.stream().findFirst()).ifPresent(w -> {
             if ("Clear".equals(w.getMain())) {
-                recommendedGear.put(Gear.SUN.name(), gearMap.get(Gear.SUN.name()));
+                recommendedGear.put(Gear.SUNNY.name(), gearMap.get(Gear.SUNNY.name()));
             } else if ("Rain".equals(w.getMain())) {
-                recommendedGear.put(Gear.RAIN.name(), gearMap.get(Gear.RAIN.name()));
+                recommendedGear.put(Gear.RAINY.name(), gearMap.get(Gear.RAINY.name()));
             }
         });
         Optional.ofNullable(data.getMain()).ifPresent(temp -> {
