@@ -6,7 +6,6 @@ public enum Gear {
     SUN,
     RAIN,
     COLD,
-    FOOD,
     ESSENTIALS,
     NAVIGATION,
     OPTIONAL
