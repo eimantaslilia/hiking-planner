@@ -58,7 +58,7 @@ public class WeatherQueryServiceTest {
 
         WeatherData expected = new WeatherData();
         expected.setBase("testBase");
-        expected.setId(1L);
+        expected.setId("1");
         when(mapper.readValue(anyString(), eq(WeatherData.class))).thenReturn(expected);
 
         //when

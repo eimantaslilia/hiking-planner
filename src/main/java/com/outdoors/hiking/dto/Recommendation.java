@@ -12,5 +12,5 @@ public class Recommendation {
 
     private HashMap<String, List<String>> gearRecommendations;
 
-    private HashMap<String, String> information;
+    private HashMap<String, String> tripInformation;
 }
