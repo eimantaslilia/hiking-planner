@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 public class Sys {
 
-    private int type;
-    private int id;
+    private String type;
+    private String id;
     private String country;
-    private long sunrise;
-    private long sunset;
+    private String sunrise;
+    private String sunset;
 }

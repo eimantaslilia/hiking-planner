@@ -3,6 +3,7 @@ package com.outdoors.hiking.dto.weather;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -13,13 +14,13 @@ public class WeatherData {
     private List<Weather> weather;
     private String base;
     private MainInfo main;
-    private Long visibility;
+    private String visibility;
     private Wind wind;
     private Cloud clouds;
-    private Long dt;
+    private String dt;
     private Sys sys;
-    private Long timezone;
-    private Long id;
+    private String timezone;
+    private String id;
     private String name;
     private String cod;
     private String message;

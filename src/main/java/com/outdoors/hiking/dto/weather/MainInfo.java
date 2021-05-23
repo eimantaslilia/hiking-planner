@@ -7,10 +7,10 @@ import lombok.Setter;
 @Setter
 public class MainInfo {
 
-    private double temp;
-    private double feels_like;
-    private double temp_min;
-    private double temp_max;
-    private double pressure;
-    private double humidity;
+    private String temp;
+    private String feels_like;
+    private String temp_min;
+    private String temp_max;
+    private String pressure;
+    private String humidity;
 }
