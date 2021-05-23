@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -23,13 +21,46 @@ public class GearInformationProvider implements InformationProvider {
     @PostConstruct
     public void validateKeys() {
         List<String> enums = Arrays.stream(Gear.values()).map(Enum::name).collect(Collectors.toList());
-        if(!gearMap.keySet().containsAll(enums)) {
-            throw new RuntimeException("Please make sure that gearMap keys match GEAR_TYPE enum values.");
+        if (!gearMap.keySet().containsAll(enums)) {
+            throw new RuntimeException(String.format("Please make sure that gearMap keys match %s enum values.", Gear.class.getSimpleName()));
         }
     }
 
     @Override
     public Recommendation provide(Recommendation rec, WeatherData weatherData, Input input) {
+        rec.setGearInfo(getRelevantGear(weatherData, input));
         return rec;
+    }
+
+    private Map<String, List<String>> getRelevantGear(WeatherData data, Input input) {
+        var recommendedGear = new HashMap<String, List<String>>();
+        recommendedGear.put(Gear.ESSENTIALS.name(), gearMap.get(Gear.ESSENTIALS.name()));
+        recommendedGear.put(Gear.OPTIONAL.name(), gearMap.get(Gear.OPTIONAL.name()));
+
+        if (input.getTripLength() >= 20) {
+            recommendedGear.put(Gear.NIGHT.name(), gearMap.get(Gear.NIGHT.name()));
+            recommendedGear.put(Gear.COLD.name(), gearMap.get(Gear.COLD.name()));
+            recommendedGear.put(Gear.NAVIGATION.name(), gearMap.get(Gear.NAVIGATION.name()));
+        }
+        if (data.isPopulated()) {
+            return recommendBasedOnWeatherConditions(data, recommendedGear);
+        }
+        return recommendedGear;
+    }
+
+    private HashMap<String, List<String>> recommendBasedOnWeatherConditions(WeatherData data, HashMap<String, List<String>> recommendedGear) {
+        Optional.ofNullable(data.getWeather()).flatMap(w -> w.stream().findFirst()).ifPresent(w -> {
+            if ("Clear".equals(w.getMain())) {
+                recommendedGear.put(Gear.SUN.name(), gearMap.get(Gear.SUN.name()));
+            } else if ("Rain".equals(w.getMain())) {
+                recommendedGear.put(Gear.RAIN.name(), gearMap.get(Gear.RAIN.name()));
+            }
+        });
+        Optional.ofNullable(data.getMain()).ifPresent(temp -> {
+            if (Double.parseDouble(temp.getTemp()) < 10) {
+                recommendedGear.computeIfAbsent(Gear.COLD.name(), k -> gearMap.get(k));
+            }
+        });
+        return recommendedGear;
     }
 }

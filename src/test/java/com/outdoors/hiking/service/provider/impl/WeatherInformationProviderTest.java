@@ -24,7 +24,7 @@ class WeatherInformationProviderTest {
         data.setVisibility(VISIBILITY);
 
         //when
-        Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("vilnius", "25"));
+        Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("vilnius", 25));
         Map<String, String> weatherInfo = recommendation.getWeatherInfo();
 
         //then
@@ -34,13 +34,13 @@ class WeatherInformationProviderTest {
     }
 
     @Test
-    void shouldNotPopulateIFWeatherDataIsEmpty() {
+    void shouldNotPopulateIfWeatherDataIsEmpty() {
         //given
         WeatherData data = new WeatherData();
         data.setPopulated(false);
 
         //when
-        Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("vilnius", "25"));
+        Recommendation recommendation = provider.provide(new Recommendation(), data, new Input("vilnius", 25));
 
         //then
         assertTrue(recommendation.getWeatherInfo().isEmpty());

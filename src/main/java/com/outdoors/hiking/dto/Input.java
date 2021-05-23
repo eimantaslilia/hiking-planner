@@ -10,5 +10,5 @@ import lombok.Setter;
 public class Input {
 
     private String location;
-    private String tripLength;
+    private int tripLength;
 }
