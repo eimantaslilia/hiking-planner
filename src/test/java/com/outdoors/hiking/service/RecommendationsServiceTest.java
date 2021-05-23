@@ -1,5 +1,6 @@
 package com.outdoors.hiking.service;
 
+import com.outdoors.hiking.dto.Gear;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -62,7 +63,7 @@ public class RecommendationsServiceTest {
     }
 
     private Map<String, List<String>> collectEnums() {
-        return Arrays.stream(RecommendationsService.GEAR_TYPE.values())
+        return Arrays.stream(Gear.values())
                 .map(Enum::name)
                 .collect(Collectors.toList())
                 .stream()
