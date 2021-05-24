@@ -10,10 +10,13 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WeatherInformationProviderTest {
+/**
+ * Unit tests covering {@link WeatherInformationProvider}
+ */
+public class WeatherInformationProviderTest {
 
-    public static final String NAME = "name";
-    public static final String VISIBILITY = "visibility";
+    private static final String NAME = "name";
+    private static final String VISIBILITY = "visibility";
     private final InformationProvider provider = new WeatherInformationProvider();
 
     @Test

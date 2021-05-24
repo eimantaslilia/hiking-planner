@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests covering {@link GearInformationProvider;}
+ * Unit tests covering {@link GearInformationProvider}
  */
 public class GearInformationProviderTest {
 

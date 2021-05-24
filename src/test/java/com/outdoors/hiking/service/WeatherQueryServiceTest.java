@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class WeatherQueryServiceTest {
 
-    public static final String TEST_LOCATION = "vilnius";
+    private static final String TEST_LOCATION = "vilnius";
 
     @Mock
     private CloseableHttpClient httpClient;

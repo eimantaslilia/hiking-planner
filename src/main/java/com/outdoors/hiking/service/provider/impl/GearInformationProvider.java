@@ -22,7 +22,7 @@ public class GearInformationProvider implements InformationProvider {
     @PostConstruct
     public void validateKeys() {
         List<String> enums = Arrays.stream(Gear.values()).map(Enum::name).collect(Collectors.toList());
-        if (!gearMap.keySet().containsAll(enums)) {
+        if (!gearMap.keySet().containsAll(enums) || !enums.containsAll(gearMap.keySet())) {
             throw new RuntimeException(String.format("Please make sure that gearMap keys match %s enum values.", Gear.class.getSimpleName()));
         }
     }
